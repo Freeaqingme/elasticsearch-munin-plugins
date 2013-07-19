@@ -14,14 +14,15 @@ my %graph_default = (
 # strategy based on symlink name
 my %plugins = (
     'elasticsearch_cache' => {
-        'path_all' => '/_cluster/nodes/stats',
-        'path' => '/_cluster/nodes/_local/stats',
+        'path_all' => '/_cluster/nodes/stats?indices=true',
+        'path' => '/_cluster/nodes/_local/stats?indices=true',
         'graph' => {
             'graph_title' => 'ElasticSearch cache',
         },
         'values' => {
-            'field_size' => { 'value' => 'indices.cache.field_size_in_bytes', 'name' => 'Field size', 'type' => 'GAUGE', },
-            'filter_size' => { 'value' => 'indices.cache.filter_size_in_bytes', 'name' => 'Filter size', 'type' => 'GAUGE', },
+            'field_size' => { 'value' => 'indices.fielddata.memory_size_in_bytes', 'name' => 'Field size', 'type' => 'GAUGE', },
+            'filter_size' => { 'value' => 'indices.filter_cache.memory_size_in_bytes', 'name' => 'Filter size', 'type' => 'GAUGE', },
+            'id_size' => { 'value' => 'indices.id_cache.memory_size_in_bytes', 'name' => 'Id size', 'type' => 'GAUGE', },
         },
     },
     'elasticsearch_docs' => {

@@ -48,8 +48,8 @@ my %plugins = (
         },
     },
     'elasticsearch_jvm_memory' => {
-        'path_all' => '/_cluster/nodes',
-        'path' => '/_cluster/nodes/_local',
+        'path_all' => '/_cluster/nodes?jvm=true',
+        'path' => '/_cluster/nodes/_local?jvm=true',
         'graph' => {
             'graph_title' => 'ElasticSearch jvm memory',
         },

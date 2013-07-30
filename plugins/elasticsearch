@@ -101,6 +101,23 @@ my %plugins = (
             'query' => { 'value' => 'indices.search.query_total', 'name' => 'query ops', 'type' => 'COUNTER', },
         },
     },
+    'elasticsearch_op_times' => {
+        'path_all' => '/_cluster/nodes/stats?clear=true&indices=true',
+        'path' => '/_cluster/nodes/_local/stats?clear=true&indices=true',
+        'graph' => {
+            'graph_args' => '--base 1000',
+            'graph_title' => 'ElasticSearch operation times',
+            'graph_vlabel' => 'sec/sec',
+        },
+        'values' => {
+            'delete' => { 'value' => 'indices.indexing.delete_time_in_millis', 'name' => 'delete ops', 'type' => 'COUNTER', 'cdef' => 'delete,1000,/', },
+            'fetch' => { 'value' => 'indices.search.fetch_time_in_millis', 'name' => 'fetch ops', 'type' => 'COUNTER', 'cdef' => 'fetch,1000,/', },
+            'get' => { 'value' => 'indices.get.time_in_millis', 'name' => 'get ops', 'type' => 'COUNTER', 'cdef' => 'get,1000,/', },
+            'indexing' => { 'value' => 'indices.indexing.index_time_in_millis', 'name' => 'index ops', 'type' => 'COUNTER', 'cdef' => 'indexing,1000,/', },
+            'query' => { 'value' => 'indices.search.query_time_in_millis', 'name' => 'query ops', 'type' => 'COUNTER', 'cdef' => 'query,1000,/', },
+            'merges' => { 'value' => 'indices.merges.total_time_in_millis', 'name' => 'merge ops', 'type' => 'COUNTER', 'cdef' => 'merges,1000,/', },
+        },
+    },
     'elasticsearch_thread_ops' => {
         'path_all' => '/_cluster/nodes/stats?clear=true&thread_pool=true',
         'path' => '/_cluster/nodes/_local/stats?clear=true&thread_pool=true',
@@ -253,6 +270,9 @@ sub doOutputConfig {
         foreach my $key (keys(%{$plugin->{values}})) {
             print $key, ".label ", $plugin->{values}->{$key}->{name}, "\n";
             print $key, ".type ", uc($plugin->{values}->{$key}->{type}), "\n";
+            if (exists($plugin->{values}->{$key}->{cdef})) {
+                print $key, ".cdef ", $plugin->{values}->{$key}->{cdef}, "\n";
+            }
         }
     } else {
         my $nodes = getElasticSearchNodes($plugin, $ua);

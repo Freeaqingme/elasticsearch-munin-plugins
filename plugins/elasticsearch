@@ -101,6 +101,29 @@ my %plugins = (
             'query' => { 'value' => 'indices.search.query_total', 'name' => 'query ops', 'type' => 'COUNTER', },
         },
     },
+    'elasticsearch_thread_ops' => {
+        'path_all' => '/_cluster/nodes/stats?clear=true&thread_pool=true',
+        'path' => '/_cluster/nodes/_local/stats?clear=true&thread_pool=true',
+        'graph' => {
+            'graph_args' => '--base 1000',
+            'graph_title' => 'ElasticSearch thread ops',
+            'graph_vlabel' => 'ops/sec',
+        },
+        'values' => {
+            'generic' => { 'value' => 'thread_pool.generic.completed', 'name' => 'generic ops', 'type' => 'COUNTER', },
+            'warmer' => { 'value' => 'thread_pool.warmer.completed', 'name' => 'warmer ops', 'type' => 'COUNTER', },
+            'index' => { 'value' => 'thread_pool.index.completed', 'name' => 'index ops', 'type' => 'COUNTER', },
+            'flush' => { 'value' => 'thread_pool.flush.completed', 'name' => 'flush ops', 'type' => 'COUNTER', },
+            'get' => { 'value' => 'thread_pool.get.completed', 'name' => 'get ops', 'type' => 'COUNTER', },
+            'search' => { 'value' => 'thread_pool.search.completed', 'name' => 'search ops', 'type' => 'COUNTER', },
+            'snapshot' => { 'value' => 'thread_pool.snapshot.completed', 'name' => 'snapshot ops', 'type' => 'COUNTER', },
+            'merge' => { 'value' => 'thread_pool.merge.completed', 'name' => 'merge ops', 'type' => 'COUNTER', },
+            'percolate' => { 'value' => 'thread_pool.percolate.completed', 'name' => 'percolate ops', 'type' => 'COUNTER', },
+            'refresh' => { 'value' => 'thread_pool.refresh.completed', 'name' => 'refresh ops', 'type' => 'COUNTER', },
+            'management' => { 'value' => 'thread_pool.management.completed', 'name' => 'management ops', 'type' => 'COUNTER', },
+            'bulk' => { 'value' => 'thread_pool.bulk.completed', 'name' => 'bulk ops', 'type' => 'COUNTER', },
+        },
+    },
 );
 
 # determine which plugin
